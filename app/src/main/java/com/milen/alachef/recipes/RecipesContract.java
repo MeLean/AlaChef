@@ -2,9 +2,10 @@ package com.milen.alachef.recipes;
 
 import android.support.annotation.NonNull;
 
+import com.milen.alachef.data.api.CallBackRecipes;
 import com.milen.alachef.interfaces.BasePresenter;
 import com.milen.alachef.interfaces.BaseView;
-import com.milen.alachef.data.Recipe;
+import com.milen.alachef.data.api_model.Recipe;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ public interface RecipesContract {
 
         void showNoRecipes();
 
-        void showRecipes(List<Recipe> tasks);
+        void showRecipes(List<Recipe> recipes);
 
         void showSearchingMenu();
 

@@ -1,5 +1,5 @@
 
-        package com.milen.alachef.data;
+        package com.milen.alachef.data.api_model;
 
 
         import com.google.gson.annotations.Expose;

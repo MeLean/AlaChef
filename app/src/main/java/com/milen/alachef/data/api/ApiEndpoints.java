@@ -1,4 +1,4 @@
-package com.milen.alachef.data;
+package com.milen.alachef.data.api;
 
 
 public class ApiEndpoints {

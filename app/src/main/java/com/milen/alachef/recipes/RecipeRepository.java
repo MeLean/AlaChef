@@ -1,19 +1,24 @@
-package com.milen.alachef.data;
+package com.milen.alachef.recipes;
 
 
 import android.content.Context;
 import android.support.annotation.Nullable;
+
+import com.milen.alachef.data.api.ApiService;
+import com.milen.alachef.data.api.CallBackRecipes;
+import com.milen.alachef.data.api_model.Recipe;
+
+import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
-import retrofit2.Callback;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-import rx.Subscriber;
+
 
 public class RecipeRepository {
     @Nullable
@@ -21,7 +26,7 @@ public class RecipeRepository {
     private static ApiService mApiService = null;
 
 
-    public static RecipeRepository getInstance(Context context) {
+    static RecipeRepository getInstance(Context context) {
         if (INSTANCE == null) {
             INSTANCE = new RecipeRepository();
             int cacheSize = 10 * 1024 * 1024; // 10 MB
@@ -36,7 +41,7 @@ public class RecipeRepository {
             Retrofit.Builder builder = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .client(okHttpClient)
-                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create());
             mApiService = builder.build().create(ApiService.class);
         }
@@ -48,29 +53,17 @@ public class RecipeRepository {
     }
 
 
-    public void getPublishedRecipes(Callback<Recipe> callback ){
+    public void loadPublishedRecipes(final CallBackRecipes callBackRecipes){
         Observable recipesObservable = mApiService.getAllPublishedRecipes();
 
         recipesObservable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<Recipe>() {
-                               @Override
-                               public void onCompleted() {
+                .doOnNext(recipes -> callBackRecipes.onSuccess((List<Recipe>) recipes))
+                .doOnError(error -> callBackRecipes.onError((Throwable) error))
+                .subscribe();
 
-                               }
 
-                               @Override
-                               public void onError(Throwable e) {
-
-                               }
-
-                               @Override
-                               public void onNext(Recipe recipe) {
-
-                               }
-                           }
-                   );
     }
 
 }

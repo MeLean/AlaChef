@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -43,6 +44,21 @@ public class RecipesActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        Fragment recipeFragment = getSupportFragmentManager().findFragmentByTag(RecipeFragment.TAG);
+
+        RecipesContract.Presenter presenter =
+                new RecipePresenter((RecipesContract.View) recipeFragment, RecipeRepository.getInstance(this));
+
+        if (recipeFragment == null){
+            recipeFragment = RecipeFragment.newInstance();
+            ((RecipeFragment)recipeFragment).setPresenter(presenter);
+        }
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_holder, recipeFragment, RecipeFragment.TAG)
+                .commit();
     }
 
     @Override
