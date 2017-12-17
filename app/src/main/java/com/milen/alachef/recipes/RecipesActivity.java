@@ -1,5 +1,6 @@
 package com.milen.alachef.recipes;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -14,11 +15,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.YouTubePlayerView;
 import com.milen.alachef.R;
+import com.milen.alachef.youtube.Config;
+import com.milen.alachef.youtube.VideoActivity;
 
 public class RecipesActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener  {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,18 +54,23 @@ public class RecipesActivity extends AppCompatActivity
 
         Fragment recipeFragment = getSupportFragmentManager().findFragmentByTag(RecipeFragment.TAG);
 
-        RecipesContract.Presenter presenter =
-                new RecipePresenter((RecipesContract.View) recipeFragment, RecipeRepository.getInstance(this));
+
 
         if (recipeFragment == null){
             recipeFragment = RecipeFragment.newInstance();
-            ((RecipeFragment)recipeFragment).setPresenter(presenter);
         }
+
+        RecipesContract.Presenter presenter =
+                new RecipePresenter((RecipesContract.View) recipeFragment, RecipeRepository.getInstance(this));
+
+        ((RecipeFragment)recipeFragment).setPresenter(presenter);
 
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_holder, recipeFragment, RecipeFragment.TAG)
                 .commit();
+
+        //todo manage button remove video
     }
 
     @Override
@@ -113,8 +125,10 @@ public class RecipesActivity extends AppCompatActivity
 
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
 }

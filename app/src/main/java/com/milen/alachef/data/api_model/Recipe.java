@@ -1,11 +1,11 @@
 
-        package com.milen.alachef.data.api_model;
+package com.milen.alachef.data.api_model;
 
 
-        import com.google.gson.annotations.Expose;
-        import com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
-        public class Recipe {
+public class Recipe {
 
     @SerializedName("Category")
     @Expose
@@ -85,6 +85,7 @@
     @SerializedName("PrepareSteps")
     @Expose
     private String prepareSteps;
+
     @SerializedName("___class")
 
 

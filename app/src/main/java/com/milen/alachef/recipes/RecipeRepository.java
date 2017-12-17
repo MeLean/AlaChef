@@ -5,8 +5,8 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 
 import com.milen.alachef.data.api.ApiService;
-import com.milen.alachef.data.api.CallBackRecipes;
-import com.milen.alachef.data.api_model.Recipe;
+import com.milen.alachef.data.api.CallbackWrapper;
+
 
 import java.util.List;
 
@@ -53,17 +53,19 @@ public class RecipeRepository {
     }
 
 
-    public void loadPublishedRecipes(final CallBackRecipes callBackRecipes){
+    void loadPublishedRecipes(RecipesContract.View view){
         Observable recipesObservable = mApiService.getAllPublishedRecipes();
 
         recipesObservable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnNext(recipes -> callBackRecipes.onSuccess((List<Recipe>) recipes))
-                .doOnError(error -> callBackRecipes.onError((Throwable) error))
-                .subscribe();
+                .subscribeWith(new CallbackWrapper(view) {
 
+                    @Override
+                    protected void onSuccess(List list) {
 
+                    }
+                });
     }
 
 }
