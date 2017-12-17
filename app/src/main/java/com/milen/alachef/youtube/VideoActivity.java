@@ -18,6 +18,9 @@ public class VideoActivity extends YouTubeBaseActivity implements  YouTubePlayer
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
+
+        youTubeView = (YouTubePlayerView) findViewById(R.id.youtube_view);
+        youTubeView.initialize(Config.YOUTUBE_API_KEY, this);
     }
 
     @Override
@@ -35,7 +38,7 @@ public class VideoActivity extends YouTubeBaseActivity implements  YouTubePlayer
     @Override
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean wasRestored) {
         if (!wasRestored) {
-            youTubePlayer.cueVideo("fhWaJi1Hsfo"); // Plays https://www.youtube.com/watch?v=fhWaJi1Hsfo
+            youTubePlayer.cueVideo("ZJy1ajvMU1k"); // Plays https://www.youtube.com/watch?v=fhWaJi1Hsfo
         }
     }
 

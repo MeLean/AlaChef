@@ -54,8 +54,6 @@ public class RecipesActivity extends AppCompatActivity
 
         Fragment recipeFragment = getSupportFragmentManager().findFragmentByTag(RecipeFragment.TAG);
 
-
-
         if (recipeFragment == null){
             recipeFragment = RecipeFragment.newInstance();
         }
@@ -69,8 +67,6 @@ public class RecipesActivity extends AppCompatActivity
                 .beginTransaction()
                 .replace(R.id.fragment_holder, recipeFragment, RecipeFragment.TAG)
                 .commit();
-
-        //todo manage button remove video
     }
 
     @Override
